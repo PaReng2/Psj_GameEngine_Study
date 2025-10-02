@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,6 +14,14 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     public bool isGrounded;
 
+    
+    public int maxHP = 100;
+    private int curHP;
+
+    [Header("체력바")]
+    public Slider hpBar;
+
+    [Header("카메라")]
     public CinemachineVirtualCamera virtualCam;
     public float rotationSpeed = 10f;
     private CinemachinePOV pov;
@@ -21,6 +31,10 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         pov = virtualCam.GetCinemachineComponent<CinemachinePOV>();
+        curHP = maxHP;
+        hpBar.maxValue = maxHP;
+        hpBar.value = maxHP;
+
     }
 
     // Update is called once per frame
@@ -71,10 +85,28 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
 
-
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            pov.m_HorizontalAxis.Value = transform.eulerAngles.y;
+            pov.m_VerticalAxis.Value = 0f;
+        }
         
     }
 
+    public void TakeDamage(int damage)
+    {
+        curHP -= damage;
+        hpBar.value = curHP;
+        if (curHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+    }
    
 
     

@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public float spawnInterval = 3f;
     public float spawnRange = 5f;
-
+    
     private float timer = 0f;
-
+    
 
     void Update()
     {
@@ -17,6 +18,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (timer >= spawnInterval)
         {
+            
             Vector3 spawnPos = new Vector3(
                 transform.position.x + Random.Range(-spawnRange, spawnRange),
                 transform.position.y,
@@ -24,6 +26,8 @@ public class EnemySpawner : MonoBehaviour
                 );
 
             Instantiate(enemyPrefab, spawnPos, Quaternion.identity );
+               
+            
             timer = 0f;
         }
     }

@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            enemy.HitEnemy(AttackDamage);
+            enemy.TakeDamage(AttackDamage);
             Destroy(gameObject);
         }
     }
