@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Shelter
   - slider
+  - Block
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - Bullet
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

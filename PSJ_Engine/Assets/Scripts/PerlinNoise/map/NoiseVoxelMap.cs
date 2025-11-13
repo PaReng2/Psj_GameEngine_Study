@@ -68,6 +68,12 @@ public class NoiseVoxelMap : MonoBehaviour
     {
         var go = Instantiate(Gress, new Vector3(x, y, z), Quaternion.identity);
         go.name = $"B_{x}_{y}_{z}_G";
+
+        var b = go.GetComponent<Block>() ?? go.AddComponent<Block>();
+        b.type = BlockType.Grass;
+        b.maxHp = 3;
+        b.dropCount = 1;
+        b.minable = true;
     }
 
     private void SetDirt(int x, int y, int z)
@@ -82,6 +88,12 @@ public class NoiseVoxelMap : MonoBehaviour
         { 
             var go = Instantiate(dirt, new Vector3(x, y, z), Quaternion.identity);
             go.name = $"B_{x}_{y}_{z}_D";
+
+            var b = go.GetComponent<Block>() ?? go.AddComponent<Block>();
+            b.type = BlockType.Dirt;
+            b.maxHp = 3;
+            b.dropCount = 1;
+            b.minable = true;
         }
             
 
@@ -92,12 +104,20 @@ public class NoiseVoxelMap : MonoBehaviour
     {
         var go = Instantiate(Water, new Vector3(x, y, z), Quaternion.identity);
         go.name = $"B_{x}_{y}_{z}_W";
+
+        
     }
 
     private void SetGold(int x, int y, int z)
     {
         var go = Instantiate(gold, new Vector3(x, y, z), Quaternion.identity);
         go.name = $"B_{x}_{y}_{z}_G";
+
+        var b = go.GetComponent<Block>() ?? go.AddComponent<Block>();
+        b.type = BlockType.Gold;
+        b.maxHp = 5;
+        b.dropCount = 1;
+        b.minable = true;
     }
     void Update()
     {
