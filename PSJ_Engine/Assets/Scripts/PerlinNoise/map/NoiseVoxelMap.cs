@@ -63,6 +63,21 @@ public class NoiseVoxelMap : MonoBehaviour
             }
         }
     }
+    public void PlaceTile(Vector3Int pos, BlockType type)
+    {
+        switch (type)
+        {
+            case BlockType.Dirt:
+                SetDirt(pos.x, pos.y, pos.z);
+                break;
+            case BlockType.Grass:
+                SetGress(pos.x, pos.y, pos.z);
+                break;
+            case BlockType.Gold:
+                SetGress(pos.x, pos.y, pos.z);
+                break;
+        }
+    }
 
     private void SetGress(int x, int y, int z)
     {
@@ -78,14 +93,7 @@ public class NoiseVoxelMap : MonoBehaviour
 
     private void SetDirt(int x, int y, int z)
     {
-        int goldSpawn = Random.Range(1, 10);
-
-        if (goldSpawn == 1)
-        {
-            SetGold(x, y, z);
-        }
-        else 
-        { 
+        
             var go = Instantiate(dirt, new Vector3(x, y, z), Quaternion.identity);
             go.name = $"B_{x}_{y}_{z}_D";
 
@@ -94,7 +102,7 @@ public class NoiseVoxelMap : MonoBehaviour
             b.maxHp = 3;
             b.dropCount = 1;
             b.minable = true;
-        }
+        
             
 
 
@@ -119,6 +127,8 @@ public class NoiseVoxelMap : MonoBehaviour
         b.dropCount = 1;
         b.minable = true;
     }
+
+    
     void Update()
     {
         

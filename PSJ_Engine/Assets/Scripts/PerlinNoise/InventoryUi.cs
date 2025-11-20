@@ -13,6 +13,60 @@ public class InventoryUi : MonoBehaviour
     public GameObject SlotItem;
     List<GameObject> items = new List<GameObject>();
 
+    public int selectedIndex = -1;
+
+    private void Update()
+    {
+
+        for (int i = 0; i < Mathf.Min(9, Slot.Count); i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                SetSelectedIndex(i);
+            }
+        }
+    }
+
+    public void SetSelectedIndex(int idx)
+    {
+        ResetSelection();
+        if (selectedIndex == idx)
+        {
+            selectedIndex = -1;
+        }
+        else
+        {
+            if (idx >= items.Count)
+            {
+                selectedIndex = -1;
+            }
+            else
+            {
+                SetSelection(idx);
+                selectedIndex = idx;
+            }
+        }
+    }
+
+    public void ResetSelection()
+    {
+        foreach (var slot in Slot)
+        {
+            slot.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    void SetSelection(int _idx)
+    {
+        Slot[_idx].GetComponent<Image>().color = Color.yellow;
+    }
+
+    public BlockType GetInventorySlot()
+    {
+        return items[selectedIndex].GetComponent<SlotItemPrefab>().blockType;
+    }
+
+
     public void UpdateInventory(Inventory myinventory)
     {
         foreach (var slotItems in items)
@@ -32,13 +86,13 @@ public class InventoryUi : MonoBehaviour
             switch (item.Key)
             {
                 case BlockType.Dirt:
-                    sItem.ItemGetting(dirt, item.Value.ToString());
+                    sItem.ItemGetting(dirt, item.Value.ToString(), item.Key);
                     break;
                 case BlockType.Grass:
-                    sItem.ItemGetting(grass, item.Value.ToString());
+                    sItem.ItemGetting(grass, item.Value.ToString(), item.Key);
                     break;
                 case BlockType.Gold:
-                    sItem.ItemGetting(gold, item.Value.ToString());
+                    sItem.ItemGetting(gold, item.Value.ToString(), item.Key);
                     break;
 
             }

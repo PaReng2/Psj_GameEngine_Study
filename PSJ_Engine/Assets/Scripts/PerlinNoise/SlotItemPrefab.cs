@@ -8,9 +8,11 @@ public class SlotItemPrefab : MonoBehaviour
 {
     public Image itemImage;
     public TextMeshProUGUI itemText;
-    public void ItemGetting(Sprite itemSprite, string txt)
+    public BlockType blockType;
+    public void ItemGetting(Sprite itemSprite, string txt, BlockType type)
     {
         itemImage.sprite = itemSprite;
         itemText.text = txt;
+        blockType = type;
     }
 }

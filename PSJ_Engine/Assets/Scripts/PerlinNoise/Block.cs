@@ -18,10 +18,13 @@ public class Block : MonoBehaviour
     public int dropCount = 1;
     public bool minable = true;
 
+    Inventory inventory;
+
 
     bool isItem;
     void Awake()
     {
+        inventory = FindAnyObjectByType<Inventory>();
         hp = maxHp;
         if (GetComponent<Collider>() == null) gameObject.AddComponent<BoxCollider>();
         if (string.IsNullOrEmpty(gameObject.tag) || gameObject.tag == "Untagged")
@@ -41,13 +44,11 @@ public class Block : MonoBehaviour
             // 감지된 플레이어가 있으면
             if (hasPlayer)
             {
-                // 감지된 첫 번째 플레이어에게서 Inventory 컴포넌트를 가져옵니다.
-                Inventory playerInventory = colliders[0].GetComponent<Inventory>();
 
                 // 플레이어의 인벤토리가 있고, 드랍 수량이 0보다 크면
-                if (playerInventory != null && dropCount > 0)
+                if (inventory != null && dropCount > 0)
                 {
-                    playerInventory.Add(type, dropCount); // 인벤토리에 아이템 추가
+                    inventory.Add(type, dropCount); // 인벤토리에 아이템 추가
                     Destroy(gameObject); // 아이템이 줍혔으므로 오브젝트 파괴
                 }
             }
