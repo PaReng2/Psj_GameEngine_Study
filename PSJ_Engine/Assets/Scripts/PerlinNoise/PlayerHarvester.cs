@@ -29,11 +29,9 @@ public class PlayerHarvester : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void HarvestMode(int Damage)
     {
-        if (inventoryUi.selectedIndex < 0)
-        {
+        
             selectedBlock.transform.localScale = Vector3.zero;
             if (Input.GetMouseButton(0) && Time.time >= _nextHitTime)
             {
@@ -45,14 +43,16 @@ public class PlayerHarvester : MonoBehaviour
                     var block = hit.collider.GetComponent<Block>();
                     if (block != null)
                     {
-                        block.Hit(toolDamage, inventory);
+                        block.Hit(Damage, inventory);
                     }
                 }
             }
-        }
-        else
-        {
-            Ray rayDebug = _cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        
+    }
+
+    void BuildMod()
+    {
+        Ray rayDebug = _cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
                 if (Physics.Raycast(rayDebug, out var hitDebug, rayDistance, hitMask, QueryTriggerInteraction.Ignore))
                 {
                     Vector3Int placePos = AdjacentCellOnHtFace(hitDebug);
@@ -68,19 +68,47 @@ public class PlayerHarvester : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
+                
                 Ray ray = _cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
                 if (Physics.Raycast(ray, out var hit, rayDistance, hitMask, QueryTriggerInteraction.Ignore))
                 {
                     Vector3Int placePos = AdjacentCellOnHtFace(hit);
 
-                    BlockType selected = inventoryUi.GetInventorySlot();
+                    ItemType selected = inventoryUi.GetInventorySlot();
                     if (inventory.Consume(selected, 1))
                     {
                         FindAnyObjectByType<NoiseVoxelMap>().PlaceTile(placePos, selected);
                     }
                 }
             }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (inventoryUi.selectedIndex < 0)
+        {
+            HarvestMode(toolDamage);
         }
+        else
+        {
+            switch (inventoryUi.GetInventorySlot())
+            {
+                case ItemType.Axe:
+                    HarvestMode(3);
+                    break;
+                case ItemType.Ax1:
+                    HarvestMode(5);
+                    break;
+                case ItemType.Axe2:
+                    HarvestMode(6);
+                    break;
+                default:
+                    BuildMod();
+                    break;
+            }
+        }
+
     }
 
     static Vector3Int AdjacentCellOnHtFace(in RaycastHit hit)
